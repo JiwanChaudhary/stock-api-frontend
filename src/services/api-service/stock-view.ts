@@ -9,6 +9,9 @@ export interface StockViewProps {
   latest_price: number;
   rf_predicted_action: string;
   xgb_predicted_action: string;
+  arima_signal: string;
+  rf_accuracy: number
+  xgb_accuracy: number
   historical_data: HistoricalDataProps[];
 }
 

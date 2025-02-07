@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { useGetStockView } from '@/services/api-service/stock-view';
 import LineChart from './line-chart';
 import { cn } from '@/lib/utils';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 const StockPage = () => {
     const params = useParams()
@@ -34,13 +35,42 @@ const StockPage = () => {
             {/* chart */}
             <LineChart stockDetail={stockDetail} />
 
-            <div className='flex flex-col items-center mt-4'>
-                <p className='text-2xl text-gray-950 font-semibold pb-2'>Prediction for date {getFormattedDate(date)}:</p>
+            {/* <div className='flex flex-col items-center mt-4'>
                 <div className='flex flex-col gap-4'>
                     <p className=' text-lg flex justify-between items-center gap-2'>Random Forest Prediction: <span className={cn(stockDetail?.rf_predicted_action === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.rf_predicted_action}</span></p>
                     <p className=' text-lg flex justify-between items-center gap-2'>XGBoost Prediction: <span className={cn(stockDetail?.xgb_predicted_action === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.xgb_predicted_action}</span></p>
+                    <p className=' text-lg flex justify-between items-center gap-2'>Arima Prediction: <span className={cn(stockDetail?.arima_signal === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.arima_signal}</span></p>
                 </div>
+            </div> */}
+            <div className='flex flex-col items-center mt-4'>
+                <p className='text-2xl text-gray-950 font-semibold pb-2'>Prediction for date {getFormattedDate(date)}:</p>
             </div>
+            <Table className='my-4 max-w-screen-lg mx-auto'>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className='text-xl font-medium text-black/85'>Model</TableHead>
+                        <TableHead className='text-xl font-medium text-black/85'>Prediction</TableHead>
+                        <TableHead className='text-xl font-medium text-black/85'>Accuracy</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>Random Forest</TableCell>
+                        <TableCell><span className={cn(stockDetail?.rf_predicted_action === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.rf_predicted_action}</span></TableCell>
+                        <TableCell>{Math.round((stockDetail?.rf_accuracy || 0) * 100)}%</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>XGBoost</TableCell>
+                        <TableCell><span className={cn(stockDetail?.xgb_predicted_action === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.xgb_predicted_action}</span></TableCell>
+                        <TableCell>{Math.round((stockDetail?.xgb_accuracy || 0) * 100)}%</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Arima</TableCell>
+                        <TableCell><span className={cn(stockDetail?.arima_signal === 'Buy' ? 'bg-green-600' : 'bg-red-500', 'px-4 py-2 rounded-xl text-white')}>{stockDetail?.arima_signal}</span></TableCell>
+                        <TableCell>-</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
 
             {/* <div className='grid grid-cols-3 items-start justify-start gap-4 mt-4'>
                 <aside className='flex flex-col items-center gap-y-2'>
